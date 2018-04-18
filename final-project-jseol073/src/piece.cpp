@@ -35,3 +35,5 @@
 //        //shape[r][c].coord.x += shape[r][c].WIDTH;
 //    }
 //}
+
+//Created Block, Piece, and Piece classes to display on the window. The next task would be the logic and the methods on running the game
