@@ -37,9 +37,8 @@ public:
 class RedPiece : public Piece {
 public:
     //Block* red_block = new RedBlock();
-    //RedBlock red_block;
-    //vector<vector<Block>> red_shape = {{red_block}};
-    //RedPiece();
+    //vector<vector<Block>> red_shape = {{*red_block}};
+    RedPiece();
 };
 
 class DarkGreenPiece : public Piece {
