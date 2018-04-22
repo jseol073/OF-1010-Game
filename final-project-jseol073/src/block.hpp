@@ -23,26 +23,27 @@ public:
 //    ofImage orange_block;
     ofPoint coord;
     ofImage block_image;
+    string red_block_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
     Block() {};
-    explicit Block(ofImage color_block, string path);
+    explicit Block(string color_symbol);
+    ~Block() {};
     ofImage getImage();
     ofPoint getCoord();
+    void setCoord(ofPoint new_point);
     void setup();
     void draw();
 };
 
 class BackgroundBlock : public Block {
 private:
-    ofImage background_block;
-    string background_path = "Users/johnseol/cs_126/final-project-jseol073/finalproject_images/background_block.png";
+    string background_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/background_block.png";
 public:
     BackgroundBlock();
 };
 
 class RedBlock : public Block {
 private:
-    ofImage red_block;
-    string red_path = "Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
+    string red_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
 public:
     RedBlock();
 };

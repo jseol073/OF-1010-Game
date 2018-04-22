@@ -13,6 +13,8 @@ enum GameState {
 class ofApp : public ofBaseApp{
 private:
     Grid my_grid;
+    ofPoint red_coord;
+    Piece* red_piece = new RedPiece(red_coord);
     ofImage background_block;
     bool should_update = true;
     ofPoint x;

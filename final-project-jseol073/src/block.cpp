@@ -7,22 +7,26 @@
 
 #include "block.hpp"
 
-Block::Block(ofImage color_block, string path) {
-    block_image = color_block;
-    color_block.load(path);
+Block::Block(string color_symbol) {
+    if (color_symbol == "1") {
+        block_image.load(red_block_path);
+    }
 }
 
 ofImage Block::getImage() {
-    return block_image;
+    return this->block_image;
 }
 
 ofPoint Block::getCoord() {
-    return coord;
+    return this->coord;
 }
 
-
-BackgroundBlock::BackgroundBlock() : Block(background_block, background_path) {
+void Block::setCoord(ofPoint new_point) {
+    coord = new_point;
 }
 
-RedBlock::RedBlock() : Block(red_block, red_path) {
+//BackgroundBlock::BackgroundBlock() : Block(background_block, background_path) {
+//}
+
+RedBlock::RedBlock() : Block("/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png") {
 }

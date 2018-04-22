@@ -15,8 +15,12 @@
 //} TetrominoesDirection;
 
 #include <stdio.h>
+#include <vector>
+#include <string>
 #include "ofMain.h"
 #include "block.hpp"
+
+using namespace std;
 
 class Piece {
 public:
@@ -29,16 +33,26 @@ public:
 //    string url;
 //    vector<vector<ofImage>> red_piece;
     Piece() {};
-    vector<vector<Block>> shape;
-    explicit Piece(vector<vector<Block>> shape_);
+    string bit_shape;
+    Block* color;
+    explicit Piece(string bit_shape_, Block* color_);
+    ~Piece();
+    void clear();
     void setup();
-    void draw(vector<vector<Block>> shape);
+    void draw();
+    Block* red_block = new RedBlock();
+    std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
+    Block* getBlock();
+    vector<vector<Block>> makeShape();
+    Piece& operator=(const Piece& piece);
+    bool operator==(const Piece& piece);
 };
+
 class RedPiece : public Piece {
 public:
-    //Block* red_block = new RedBlock();
-    //vector<vector<Block>> red_shape = {{*red_block}};
-    RedPiece();
+    
+    RedPiece(ofPoint p);
+    ~RedPiece() {};
 };
 
 class DarkGreenPiece : public Piece {
