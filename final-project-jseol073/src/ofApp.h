@@ -18,6 +18,7 @@ private:
     ofImage background_block;
     bool should_update = true;
     ofPoint x;
+    int score = 0;
 	public:
 		void setup();
 		void update();

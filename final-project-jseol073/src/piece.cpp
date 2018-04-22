@@ -10,9 +10,13 @@
 
 using namespace std;
 
-Piece::Piece(string bit_shape_, Block* color_) {
+Piece::Piece(ofPoint p, string bit_shape_, Block* color_) {
+    main_point = p;
     bit_shape = bit_shape_;
     color = color_;
+    int grid_length = 400;
+    int grid_width = 400;
+    window_dim.set(grid_width, grid_width);
 }
 
 Piece::~Piece() {
@@ -43,7 +47,7 @@ vector<vector<Block>> Piece::makeShape() {
     for (string bit : split_line) {
         vector<Block> row;
         for (int i = 0; i < bit.length(); i++) {
-            Block any_block(bit);
+            Block any_block(main_point, bit);
             row.push_back(any_block);
         }
         shape.push_back(row);
@@ -66,7 +70,7 @@ void Piece::draw() {
         vector<Block> row_vector;
         for (int c = 0; c < actual_shape[r].size(); c++) {
             actual_shape[r][c].setCoord(temp_coord);
-            actual_shape[r][c].getImage().draw(actual_shape[r][c].coord, WIDTH, HEIGHT);
+            actual_shape[r][c].getImage().draw(actual_shape[r][c].main_coord, WIDTH, HEIGHT);
             temp_coord.x += WIDTH;
         }
         temp_coord.x = 256;
@@ -89,5 +93,5 @@ void Piece::draw() {
 //
 //}
 
-RedPiece::RedPiece(ofPoint p) : Piece("1\n1", red_block) {
+RedPiece::RedPiece(ofPoint p) : Piece(p, "1\n1", color) {
 }

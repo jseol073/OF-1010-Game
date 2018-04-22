@@ -22,6 +22,10 @@ void Grid::setup() {
     }
 }
 
+void Grid::update() {
+    
+}
+
 /*
  Draws a 10x10 grid
  */

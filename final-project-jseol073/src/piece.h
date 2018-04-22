@@ -32,15 +32,17 @@ public:
 //    ofImage orange_block;
 //    string url;
 //    vector<vector<ofImage>> red_piece;
+    ofVec2f window_dim;
+    bool canBePlaced;
     Piece() {};
+    ofPoint main_point; //top-left corner of piece
     string bit_shape;
     Block* color;
-    explicit Piece(string bit_shape_, Block* color_);
+    explicit Piece(ofPoint p, string bit_shape_, Block* color_);
     ~Piece();
     void clear();
     void setup();
     void draw();
-    Block* red_block = new RedBlock();
     std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
     Block* getBlock();
     vector<vector<Block>> makeShape();
@@ -50,7 +52,6 @@ public:
 
 class RedPiece : public Piece {
 public:
-    
     RedPiece(ofPoint p);
     ~RedPiece() {};
 };

@@ -21,61 +21,67 @@ public:
 //    ofImage blue_block;
 //    ofImage yellow_block;
 //    ofImage orange_block;
-    ofPoint coord;
+    ofPoint main_coord;
+    ofPoint top_rt;
+    ofPoint bottom_left;
+    ofPoint bottom_rt;
     ofImage block_image;
     string red_block_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
     Block() {};
-    explicit Block(string color_symbol);
+    explicit Block(ofPoint p, string color_symbol);
     ~Block() {};
     ofImage getImage();
-    ofPoint getCoord();
+    ofPoint getMainCoord();
+    ofPoint getTopRtCoord();
+    ofPoint getBottomLeftCoord();
+    ofPoint getBottomRtCoord();
     void setCoord(ofPoint new_point);
     void setup();
     void draw();
 };
 
-class BackgroundBlock : public Block {
-private:
-    string background_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/background_block.png";
-public:
-    BackgroundBlock();
-};
-
-class RedBlock : public Block {
-private:
-    string red_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
-public:
-    RedBlock();
-};
-
-class DarkGreenBlock : public Block {
-    ofImage dark_green_block;
-    string path;
-    //dark_green_block.load("/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/dar_green_block.png");
-};
-
-class NormalGreenBlock : public Block {
-    ofImage normal_green_block;
-    string path;
-};
-
-class LightGreenBlock : public Block {
-    ofImage light_green_block;
-    string path;
-};
-
-class BlueBlock : public Block {
-    ofImage blue_block;
-    string path;
-};
-
-class YellowBlock : public Block {
-    ofImage yellow_block;
-    string path;
-};
-
-class OrangeBlock : public Block {
-    ofImage orange_block;
-    string path;
-};
+//class BackgroundBlock : public Block {
+//private:
+//    string background_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/background_block.png";
+//public:
+//    BackgroundBlock();
+//};
+//
+//class RedBlock : public Block {
+//private:
+//    string red_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
+//public:
+//    RedBlock();
+//};
+//
+//class DarkGreenBlock : public Block {
+//    ofImage dark_green_block;
+//    string path;
+//    //dark_green_block.load("/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/dar_green_block.png");
+//};
+//
+//class NormalGreenBlock : public Block {
+//    ofImage normal_green_block;
+//    string path;
+//};
+//
+//class LightGreenBlock : public Block {
+//    ofImage light_green_block;
+//    string path;
+//};
+//
+//class BlueBlock : public Block {
+//    ofImage blue_block;
+//    string path;
+//};
+//
+//class YellowBlock : public Block {
+//    ofImage yellow_block;
+//    string path;
+//};
+//
+//class OrangeBlock : public Block {
+//    ofImage orange_block;
+//    string path;
+//};
 #endif /* block_hpp */

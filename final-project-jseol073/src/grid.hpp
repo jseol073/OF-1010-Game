@@ -25,6 +25,7 @@ public:
     vector<vector<ofImage>> grid_vector;
     vector<vector<int>> binary_grid;
     void setup();
+    void update();
     void draw();
 };
 #endif /* grid_hpp */
