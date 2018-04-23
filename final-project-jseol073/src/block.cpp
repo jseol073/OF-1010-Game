@@ -10,6 +10,8 @@
 Block::Block(ofPoint p, string color_symbol) {
     if (color_symbol == "1") {
         block_image.load(red_block_path);
+    } else if (color_symbol == "2") {
+        
     }
     main_coord = p;
     ofPoint temp;

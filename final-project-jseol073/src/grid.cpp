@@ -26,6 +26,14 @@ void Grid::update() {
     
 }
 
+vector<vector<int>> Grid::getBinaryGrid() {
+    return this->binary_grid;
+}
+
+void Grid::setBinaryGrid(vector<vector<int>> new_binary_grid) {
+    this->binary_grid = new_binary_grid;
+}
+
 /*
  Draws a 10x10 grid
  */

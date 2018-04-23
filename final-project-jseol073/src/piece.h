@@ -23,21 +23,19 @@
 using namespace std;
 
 class Piece {
+private:
+    const int WIDTH = 40;
+    const int HEIGHT = 40;
+    string bit_shape;
+    ofPoint main_point; //top-left corner of piece
+    ofPoint most_bottom;
+    ofPoint most_rt;
+    vector<vector<Block>> shape;
 public:
-//    ofImage red_block;
-//    ofImage dark_green_block;
-//    ofImage normal_green_block;
-//    ofImage blue_block;
-//    ofImage yellow_block;
-//    ofImage orange_block;
-//    string url;
-//    vector<vector<ofImage>> red_piece;
+    Block* color;
     ofVec2f window_dim;
     bool canBePlaced;
     Piece() {};
-    ofPoint main_point; //top-left corner of piece
-    string bit_shape;
-    Block* color;
     explicit Piece(ofPoint p, string bit_shape_, Block* color_);
     ~Piece();
     void clear();
@@ -46,6 +44,9 @@ public:
     std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
     Block* getBlock();
     vector<vector<Block>> makeShape();
+    vector<vector<Block>> getShape();
+    ofPoint getMainPoint();
+    void setMainCoord(ofPoint new_point);
     Piece& operator=(const Piece& piece);
     bool operator==(const Piece& piece);
 };

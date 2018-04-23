@@ -13,17 +13,19 @@
 #include <vector>
 
 class Grid {
-public:
-    Grid() {};
-    ~Grid() {};
-    
+private:
+    vector<vector<ofImage>> grid_vector;
+    vector<vector<int>> binary_grid;
     ofPoint coord;
     const int HEIGHT = 40;
     const int WIDTH = 40;
     const int ROWS = 10;
     const int COLS = 10;
-    vector<vector<ofImage>> grid_vector;
-    vector<vector<int>> binary_grid;
+public:
+    Grid() {};
+    ~Grid() {};
+    vector<vector<int>> getBinaryGrid();
+    void setBinaryGrid(vector<vector<int>> new_binary_grid);
     void setup();
     void update();
     void draw();

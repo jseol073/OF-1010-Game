@@ -38,17 +38,21 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    
+    ofPoint temp;
+    temp.x = mouseX - dist.x;
+    temp.y = mouseY - dist.y;
+    (red_piece->getMainPoint()).set(temp);
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    dist.x = mouseX - (red_piece->getMainPoint()).x;
+    dist.y = mouseY - (red_piece->getMainPoint()).y;
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------

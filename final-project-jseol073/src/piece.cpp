@@ -16,7 +16,7 @@ Piece::Piece(ofPoint p, string bit_shape_, Block* color_) {
     color = color_;
     int grid_length = 400;
     int grid_width = 400;
-    window_dim.set(grid_width, grid_width);
+    window_dim.set(grid_width, grid_length);
 }
 
 Piece::~Piece() {
@@ -31,8 +31,7 @@ std::vector<std::string> Piece::split_string(const std::string& str, const std::
     std::vector<std::string> strings;
     std::string::size_type pos = 0;
     std::string::size_type prev = 0;
-    while ((pos = str.find(delimiter, prev)) != std::string::npos)
-    {
+    while ((pos = str.find(delimiter, prev)) != std::string::npos) {
         strings.push_back(str.substr(prev, pos - prev));
         prev = pos + 1;
     }
@@ -43,16 +42,22 @@ std::vector<std::string> Piece::split_string(const std::string& str, const std::
 
 vector<vector<Block>> Piece::makeShape() {
     vector<string> split_line = split_string(bit_shape, "\n");
-    vector<vector<Block>> shape;
     for (string bit : split_line) {
         vector<Block> row;
         for (int i = 0; i < bit.length(); i++) {
             Block any_block(main_point, bit);
             row.push_back(any_block);
+            if (i == bit.length() - 1) {
+                
+            }
         }
         shape.push_back(row);
     }
     return shape;
+}
+
+vector<vector<Block>> Piece::getShape() {
+    return this->shape;
 }
 
 Block* Piece::getBlock() {
@@ -61,8 +66,6 @@ Block* Piece::getBlock() {
 
 void Piece::draw() {
     vector<vector<Block>> actual_shape = this->makeShape();
-    const int WIDTH = actual_shape[0][0].WIDTH;
-    const int HEIGHT = actual_shape[0][0].HEIGHT;
     ofPoint temp_coord;
     temp_coord.x = 256;
     temp_coord.y = 128;
@@ -76,6 +79,23 @@ void Piece::draw() {
         temp_coord.x = 256;
         temp_coord.y += HEIGHT;
     }
+}
+
+void Piece::setMainCoord(ofPoint new_point) {
+    this->main_point = new_point;
+    ofPoint temp = new_point;
+    for (int row = 0; row < shape.size(); row++) {
+        for (int col = 0; col < shape[row].size(); col++) {
+            shape[row][col].setCoord(new_point);
+            new_point.x += WIDTH;
+        }
+        new_point.x = temp.x;
+        new_point.y += HEIGHT;
+    }
+}
+
+ofPoint Piece::getMainPoint() {
+    return this->main_point;
 }
 
 //bool Piece::operator==(const Piece& piece) {
