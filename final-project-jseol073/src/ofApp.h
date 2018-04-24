@@ -13,12 +13,17 @@ enum GameState {
 
 class ofApp : public ofBaseApp{
 private:
+    const int BLOCK_HEIGHT = 40;
+    const int BLOCK_WIDTH = 40;
     Grid my_grid;
-    ofPoint red_coord;
+    ofPoint red_coord = ofPoint(100, 600);
+    ofPoint light_green_coord = ofPoint(200, 600);
     ofPoint dist;
     Piece* red_piece = new RedPiece(red_coord);
+    Piece* light_green_piece = new LightGreenPiece(light_green_coord);
     ofImage background_block;
     bool should_update = true;
+    bool isMouseHovered;
     ofPoint x;
     int score = 0;
 	public:

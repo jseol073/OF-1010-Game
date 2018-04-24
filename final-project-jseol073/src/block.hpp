@@ -12,23 +12,29 @@
 #include <string>
 
 class Block {
+private:
+    
 public:
     const int HEIGHT = 40;
     const int WIDTH = 40;
+    ofPoint main_coord;
+    ofPoint top_rt;
+    ofPoint bottom_left;
+    ofPoint bottom_rt;
 //    ofImage red_block;
 //    ofImage dark_green_block;
 //    ofImage normal_green_block;
 //    ofImage blue_block;
 //    ofImage yellow_block;
 //    ofImage orange_block;
-    ofPoint main_coord;
-    ofPoint top_rt;
-    ofPoint bottom_left;
-    ofPoint bottom_rt;
     ofImage block_image;
     string red_block_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png";
+    string dark_green_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/dark_green_block.png";
+    string light_green_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/light_green_block.png";
+    string blue_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/blue_block.png";
+    string orange_path = "/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/orange_block.png";
     Block() {};
-    explicit Block(ofPoint p, string color_symbol);
+    explicit Block(ofPoint main, string color_symbol);
     ~Block() {};
     ofImage getImage();
     ofPoint getMainCoord();

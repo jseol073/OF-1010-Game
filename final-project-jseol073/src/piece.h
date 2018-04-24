@@ -24,25 +24,26 @@ using namespace std;
 
 class Piece {
 private:
+    
+public:
     const int WIDTH = 40;
     const int HEIGHT = 40;
+    const int grid_length = 400;
+    const int grid_width = 400;
     string bit_shape;
     ofPoint main_point; //top-left corner of piece
     ofPoint most_bottom;
     ofPoint most_rt;
     vector<vector<Block>> shape;
-public:
-    Block* color;
-    ofVec2f window_dim;
+    ofVec2f window_dim = ofVec2f(grid_length, grid_width);
     bool canBePlaced;
     Piece() {};
-    explicit Piece(ofPoint p, string bit_shape_, Block* color_);
+    explicit Piece(ofPoint p, string bit_shape_);
     ~Piece();
     void clear();
     void setup();
     void draw();
     std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
-    Block* getBlock();
     vector<vector<Block>> makeShape();
     vector<vector<Block>> getShape();
     ofPoint getMainPoint();
@@ -59,39 +60,32 @@ public:
 
 class DarkGreenPiece : public Piece {
 public:
-    ofImage dark_green_block;
-    ofImage background_block;
-    vector<vector<int>> dark_green_shape = {{1, 1, 0}, {1, 0, 0}, {0, 0, 0,}};
+    DarkGreenPiece(ofPoint p);
+    ~DarkGreenPiece() {};
 };
 
 class NormalGreenPiece : public Piece {
 public:
-    ofImage normal_green_block;
-    vector<vector<int>> normal_green_shape = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+    NormalGreenPiece(ofPoint p);
+    ~NormalGreenPiece() {};
 };
 
 class LightGreenPiece : public Piece {
 public:
-    
-    vector<vector<int>> normal_green_shape = {{1, 1, 0}, {1, 1, 0}, {0, 0, 0}};
+    LightGreenPiece(ofPoint p);
+    ~LightGreenPiece() {};
 };
 
 class BluePiece : public Piece {
 public:
-    ofImage blue_block;
-    vector<vector<int>> blue_shape = {{1, 1, 1}, {0, 0, 1}, {0, 0, 1}};
-};
-
-class YellowPiece : public Piece {
-public:
-    ofImage yellow_block;
-    vector<vector<int>> yellow_shape = {{1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
+    BluePiece(ofPoint p);
+    ~BluePiece() {};
 };
 
 class OrangePiece : public Piece {
 public:
-    ofImage orange_block;
-    vector<vector<int>> orange_shape = {{1, 0, 0}, {1, 0, 0}, {1, 0, 0}};
+    OrangePiece(ofPoint p);
+    ~OrangePiece() {};
 };
 
 #endif /* piece_h */

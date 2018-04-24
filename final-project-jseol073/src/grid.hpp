@@ -9,6 +9,7 @@
 #define grid_hpp
 
 #include "ofMain.h"
+#include "piece.h"
 #include <stdio.h>
 #include <vector>
 

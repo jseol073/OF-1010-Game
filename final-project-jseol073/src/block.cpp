@@ -7,14 +7,25 @@
 
 #include "block.hpp"
 
-Block::Block(ofPoint p, string color_symbol) {
+Block::Block(ofPoint main, string color_symbol) {
+    main_coord = main;
+    ofPoint temp;
     if (color_symbol == "1") {
         block_image.load(red_block_path);
+        main_coord.x = 256;
+        main_coord.y = 128;
     } else if (color_symbol == "2") {
-        
+        block_image.load(dark_green_path);
+        main_coord.x = 600;
+        main_coord.y = 600;
+    } else if (color_symbol == "3") {
+        block_image.load(light_green_path);
+    } else if (color_symbol == "4") {
+        block_image.load(blue_path);
+    } else if (color_symbol == "5") {
+        block_image.load(orange_path);
     }
-    main_coord = p;
-    ofPoint temp;
+    
     temp.x = main_coord.x + WIDTH;
     temp.y = main_coord.y + HEIGHT;
     top_rt.set(temp.x, main_coord.y);

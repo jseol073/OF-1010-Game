@@ -10,13 +10,9 @@
 
 using namespace std;
 
-Piece::Piece(ofPoint p, string bit_shape_, Block* color_) {
+Piece::Piece(ofPoint p, string bit_shape_) {
     main_point = p;
     bit_shape = bit_shape_;
-    color = color_;
-    int grid_length = 400;
-    int grid_width = 400;
-    window_dim.set(grid_width, grid_length);
 }
 
 Piece::~Piece() {
@@ -24,7 +20,6 @@ Piece::~Piece() {
 }
 
 void Piece::clear() {
-    delete color;
 }
 
 std::vector<std::string> Piece::split_string(const std::string& str, const std::string& delimiter) {
@@ -41,15 +36,15 @@ std::vector<std::string> Piece::split_string(const std::string& str, const std::
 }
 
 vector<vector<Block>> Piece::makeShape() {
+    shape.clear();
     vector<string> split_line = split_string(bit_shape, "\n");
     for (string bit : split_line) {
         vector<Block> row;
         for (int i = 0; i < bit.length(); i++) {
-            Block any_block(main_point, bit);
+            Block any_block(main_point, bit.substr(i, i + 1));
             row.push_back(any_block);
-            if (i == bit.length() - 1) {
-                
-            }
+//            if (i == bit.length() - 1) {
+//            }
         }
         shape.push_back(row);
     }
@@ -60,15 +55,11 @@ vector<vector<Block>> Piece::getShape() {
     return this->shape;
 }
 
-Block* Piece::getBlock() {
-    return this->color;
-}
-
 void Piece::draw() {
     vector<vector<Block>> actual_shape = this->makeShape();
     ofPoint temp_coord;
-    temp_coord.x = 256;
-    temp_coord.y = 128;
+    temp_coord.x = main_point.x;
+    temp_coord.y = main_point.y;
     for (int r = 0; r < actual_shape.size(); r++) {
         vector<Block> row_vector;
         for (int c = 0; c < actual_shape[r].size(); c++) {
@@ -76,7 +67,7 @@ void Piece::draw() {
             actual_shape[r][c].getImage().draw(actual_shape[r][c].main_coord, WIDTH, HEIGHT);
             temp_coord.x += WIDTH;
         }
-        temp_coord.x = 256;
+        temp_coord.x = main_point.x;
         temp_coord.y += HEIGHT;
     }
 }
@@ -113,5 +104,17 @@ ofPoint Piece::getMainPoint() {
 //
 //}
 
-RedPiece::RedPiece(ofPoint p) : Piece(p, "1\n1", color) {
+RedPiece::RedPiece(ofPoint p) : Piece(p, "1\n1") {
+}
+
+DarkGreenPiece::DarkGreenPiece(ofPoint p) : Piece(p, "22\n2") {
+}
+
+LightGreenPiece::LightGreenPiece(ofPoint p) : Piece(p, "33\n33") {
+}
+
+BluePiece::BluePiece(ofPoint p) : Piece(p, "444\n444\n444") {
+}
+
+OrangePiece::OrangePiece(ofPoint p) : Piece(p, "5\n5\n5") {
 }
