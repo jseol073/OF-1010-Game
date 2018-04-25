@@ -7,6 +7,9 @@
 
 #include "grid.hpp"
 
+//adds images of background_blocks to a 2D vector of images
+//also adds 0's to binary_grid (2d vector)
+//binary_grid is updated when a piece is on the dimensions of the grid
 void Grid::setup() {
     for (int r = 0; r < ROWS; r++) {
         vector<ofImage> row_vector;
@@ -22,8 +25,13 @@ void Grid::setup() {
     }
 }
 
+//updates when new piece is added on the grid
 void Grid::update() {
-    
+    for (int row = 0; row < binary_grid.size(); row++) {
+        for (int col = 0; col < binary_grid.size(); col++) {
+            
+        }
+    }
 }
 
 vector<vector<int>> Grid::getBinaryGrid() {

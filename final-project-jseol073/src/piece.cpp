@@ -10,8 +10,10 @@
 
 using namespace std;
 
-Piece::Piece(ofPoint p, string bit_shape_) {
-    main_point = p;
+//bit_shape represents a shape of a piece as a string
+//main_point is the top_left point of a piece
+Piece::Piece(ofPoint main_point_, string bit_shape_) {
+    main_point = main_point_;
     bit_shape = bit_shape_;
 }
 
@@ -22,6 +24,9 @@ Piece::~Piece() {
 void Piece::clear() {
 }
 
+//splits a string specified by delimiter
+//helper method for makeShape
+//got method from https://stackoverflow.com/questions/13172158/c-split-string-by-line?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 std::vector<std::string> Piece::split_string(const std::string& str, const std::string& delimiter) {
     std::vector<std::string> strings;
     std::string::size_type pos = 0;
@@ -31,17 +36,17 @@ std::vector<std::string> Piece::split_string(const std::string& str, const std::
         prev = pos + 1;
     }
     strings.push_back(str.substr(prev));
-    
     return strings;
 }
 
+//creates 2d vector of Block objects by splitting bit_shape and then adding Block objects to that vector
 vector<vector<Block>> Piece::makeShape() {
     shape.clear();
     vector<string> split_line = split_string(bit_shape, "\n");
     for (string bit : split_line) {
         vector<Block> row;
         for (int i = 0; i < bit.length(); i++) {
-            Block any_block(main_point, bit.substr(i, i + 1));
+            Block any_block(main_point, bit[i]); //initializes Block objects
             row.push_back(any_block);
 //            if (i == bit.length() - 1) {
 //            }
@@ -55,16 +60,18 @@ vector<vector<Block>> Piece::getShape() {
     return this->shape;
 }
 
+//Draws each shape when called by ofApps.cpp
+//calls on makeShape which creates a 2d vector of Block objects that represents the shape of a specified piece
+//then draws each Block elements
 void Piece::draw() {
     vector<vector<Block>> actual_shape = this->makeShape();
     ofPoint temp_coord;
     temp_coord.x = main_point.x;
     temp_coord.y = main_point.y;
     for (int r = 0; r < actual_shape.size(); r++) {
-        vector<Block> row_vector;
         for (int c = 0; c < actual_shape[r].size(); c++) {
-            actual_shape[r][c].setCoord(temp_coord);
-            actual_shape[r][c].getImage().draw(actual_shape[r][c].main_coord, WIDTH, HEIGHT);
+            actual_shape[r][c].setCoord(temp_coord); //sets coordinates for each block
+            actual_shape[r][c].getImage().draw(actual_shape[r][c].getMainCoord(), WIDTH, HEIGHT);
             temp_coord.x += WIDTH;
         }
         temp_coord.x = main_point.x;
@@ -72,8 +79,11 @@ void Piece::draw() {
     }
 }
 
+//setter for private variable, new_point
 void Piece::setMainCoord(ofPoint new_point) {
     this->main_point = new_point;
+    
+    //when new main_point is set, then set the points for the rest of the blocks of the piece
     ofPoint temp = new_point;
     for (int row = 0; row < shape.size(); row++) {
         for (int col = 0; col < shape[row].size(); col++) {
@@ -85,8 +95,32 @@ void Piece::setMainCoord(ofPoint new_point) {
     }
 }
 
+bool Piece::getIsPieceDragged() {
+    return is_piece_dragged;
+}
+
+bool Piece::getIsPiecePressed() {
+    return is_piece_pressed;
+}
+
+bool Piece::getIsPieceReleased() {
+    return is_piece_released;
+}
+
 ofPoint Piece::getMainPoint() {
     return this->main_point;
+}
+
+void Piece::setIsPieceDragged(bool new_is_dragged) {
+    is_piece_dragged = new_is_dragged;
+}
+
+void Piece::setIsPiecePressed(bool new_is_pressed) {
+    is_piece_pressed = new_is_pressed;
+}
+
+void Piece::setIsPieceReleased(bool new_is_released) {
+    is_piece_released = new_is_released;
 }
 
 //bool Piece::operator==(const Piece& piece) {
@@ -104,6 +138,8 @@ ofPoint Piece::getMainPoint() {
 //
 //}
 
+//initializing subclasses:
+//initialize bit_shape in accordance with its actual shape
 RedPiece::RedPiece(ofPoint p) : Piece(p, "1\n1") {
 }
 

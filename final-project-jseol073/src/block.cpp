@@ -7,25 +7,26 @@
 
 #include "block.hpp"
 
-Block::Block(ofPoint main, string color_symbol) {
+//main is the top left point of the Block
+//color_symbol is a char to define which image to load
+Block::Block(ofPoint main, char color_symbol) {
     main_coord = main;
     ofPoint temp;
-    if (color_symbol == "1") {
+    
+    //loading images:
+    if (color_symbol == '1') {
         block_image.load(red_block_path);
-        main_coord.x = 256;
-        main_coord.y = 128;
-    } else if (color_symbol == "2") {
+    } else if (color_symbol == '2') {
         block_image.load(dark_green_path);
-        main_coord.x = 600;
-        main_coord.y = 600;
-    } else if (color_symbol == "3") {
+    } else if (color_symbol == '3') {
         block_image.load(light_green_path);
-    } else if (color_symbol == "4") {
+    } else if (color_symbol == '4') {
         block_image.load(blue_path);
-    } else if (color_symbol == "5") {
+    } else if (color_symbol == '5') {
         block_image.load(orange_path);
     }
     
+    //sets other 3 points
     temp.x = main_coord.x + WIDTH;
     temp.y = main_coord.y + HEIGHT;
     top_rt.set(temp.x, main_coord.y);
@@ -53,6 +54,8 @@ ofPoint Block::getTopRtCoord() {
     return this->top_rt;
 }
 
+//setter for main_coord
+//also sets the other 3 corners
 void Block::setCoord(ofPoint new_point) {
     main_coord = new_point;
     ofPoint temp;
@@ -62,9 +65,3 @@ void Block::setCoord(ofPoint new_point) {
     bottom_rt.set(temp.x, temp.y);
     bottom_left.set(main_coord.x, temp.y);
 }
-
-//BackgroundBlock::BackgroundBlock() : Block(background_block, background_path) {
-//}
-
-//RedBlock::RedBlock() : Block("/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/red_block.png") {
-//}

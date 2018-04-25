@@ -24,8 +24,9 @@ using namespace std;
 
 class Piece {
 private:
-    
-public:
+    bool is_piece_dragged = false;
+    bool is_piece_pressed = false;
+    bool is_piece_released = false;
     const int WIDTH = 40;
     const int HEIGHT = 40;
     const int grid_length = 400;
@@ -36,13 +37,20 @@ public:
     ofPoint most_rt;
     vector<vector<Block>> shape;
     ofVec2f window_dim = ofVec2f(grid_length, grid_width);
+public:
     bool canBePlaced;
     Piece() {};
-    explicit Piece(ofPoint p, string bit_shape_);
+    explicit Piece(ofPoint main_point_, string bit_shape_);
     ~Piece();
     void clear();
     void setup();
     void draw();
+    bool getIsPieceDragged();
+    bool getIsPiecePressed();
+    bool getIsPieceReleased();
+    void setIsPieceDragged(bool new_is_dragged);
+    void setIsPiecePressed(bool new_is_pressed);
+    void setIsPieceReleased(bool new_is_released);
     std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
     vector<vector<Block>> makeShape();
     vector<vector<Block>> getShape();
@@ -52,6 +60,7 @@ public:
     bool operator==(const Piece& piece);
 };
 
+//subclasses for different pieces:
 class RedPiece : public Piece {
 public:
     RedPiece(ofPoint p);
