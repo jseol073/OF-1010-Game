@@ -18,12 +18,14 @@ private:
     const int GRID_X = 258;
     const int GRID_Y = 128;
     const int GRID_LENGTH = 400;
+    const ofPoint DEFAULT_GRID_POINT = ofPoint(256, 128);
     const ofPoint DEFAULT_RED_POINT = ofPoint(100, 600);
     const ofPoint DEFAULT_LIGHT_GREEN_POINT = ofPoint(300, 600);
     const ofPoint DEFAULT_DARK_GREEN_POINT = ofPoint(500, 600);
     const ofPoint DEFAULT_BLUE_POINT = ofPoint(700, 600);
     const ofPoint DEFAULT_ORANGE_POINT = ofPoint(900, 600);
     Grid my_grid;
+    vector<vector<int>> binary_grid = my_grid.getBinaryGrid();
     
     //Pieces:
     Piece* red_piece = new RedPiece(DEFAULT_RED_POINT);
@@ -32,7 +34,7 @@ private:
     Piece* blue_piece = new BluePiece(DEFAULT_BLUE_POINT);
     Piece* orange_piece = new OrangePiece(DEFAULT_ORANGE_POINT);
     
-    bool is_piece_on_window;
+    bool is_piece_on_window = false;
     bool on_red_piece = false;
     bool on_dark_green_piece = false;
     bool on_light_green_piece = false;
@@ -44,6 +46,7 @@ private:
     bool is_blue_piece_released = false;
     bool is_orange_piece_released = false;
     int score = 0;
+    vector<vector<int>> top_ten_scores;
 public:
 		void setup();
         void reset();
@@ -52,6 +55,8 @@ public:
 
     bool isMouseOnGrid(int mouseX, int mouseY);
     bool isOnPiece(int mouseX, int mouseY, ofPoint curr_piece_point);
+    bool isPieceOnGrid(int mouseX, int mouseY, Piece* any_piece);
+    ofPoint getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piece_point, bool& is_piece_released);
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );

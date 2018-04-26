@@ -4,7 +4,7 @@
 void ofApp::setup(){
     ofSetBackgroundColor(255,255,255);
     ofSetWindowTitle("1010!");
-    ofSetFrameRate(20);
+    ofSetFrameRate(60);
     my_grid.setup();
 }
 
@@ -13,6 +13,7 @@ void ofApp::update(){
     //if all pieces are releases, then respawn new set of pieces in default locations
     if (is_red_piece_released && is_lightgreen_piece_released && is_darkgreen_piece_released
         && is_blue_piece_released && is_orange_piece_released) {
+        
         on_red_piece = false;
         on_dark_green_piece = false;
         on_light_green_piece = false;
@@ -90,7 +91,7 @@ void ofApp::mousePressed(int x, int y, int button){
     ofPoint curr_blue_point = blue_piece->getMainPoint();
     ofPoint curr_orange_point = orange_piece->getMainPoint();
     
-    //checks if mouse button is pressed and that the mouse is on the Piece and the piece is yet released
+    //checks if mouse button is pressed and that the mouse is on the Piece and that the piece is yet released
     if (button == 0 && isOnPiece(x, y, curr_red_piece_point) && !is_red_piece_released) {
         on_red_piece = true;
     } else if (button == 0 && isOnPiece(x, y, curr_light_grn_point) && !is_lightgreen_piece_released) {
@@ -117,61 +118,61 @@ bool ofApp::isOnPiece(int mouseX, int mouseY, ofPoint curr_piece_point) {
 //--------------------------------------------------------------
 //called when user releases a piece
 void ofApp::mouseReleased(int x, int y, int button){
-    ofPoint mouse;
     if (on_red_piece) { //checks if mouse is currently dragging piece
-        if (isMouseOnGrid(x, y)) { //then checks if mouse on the grid
-            mouse.x = x;
-            mouse.y = y;
-            red_piece->setMainCoord(mouse); //sets the piece to new point and then draws it
+        if (isMouseOnGrid(x, y) && isPieceOnGrid(x, y, red_piece)) { //then checks if mouse on the grid
+            ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_RED_POINT, is_red_piece_released);
+            red_piece->setMainCoord(valid_point); //sets the piece to new valid point and then draws it
             on_red_piece = false;
-            is_red_piece_released = true;
+            score += 2;
             this->update();
-        } else { //if mouse is not on grid then sets piece back to where it was
+        } else { //if mouse is not on grid then set the piece back to where it was
             red_piece->setMainCoord(DEFAULT_RED_POINT);
+            on_red_piece = false;
         }
     } else if (on_light_green_piece) {
-        if (isMouseOnGrid(x, y)) {
-            mouse.x = x;
-            mouse.y = y;
-            light_green_piece->setMainCoord(mouse);
+        if (isMouseOnGrid(x, y) && isPieceOnGrid(x, y, light_green_piece)) {
+            ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_LIGHT_GREEN_POINT, is_lightgreen_piece_released);
+            light_green_piece->setMainCoord(valid_point);
             on_light_green_piece = false;
-            is_lightgreen_piece_released = true;
+            score += 4;
             this->update();
         } else {
             light_green_piece->setMainCoord(DEFAULT_LIGHT_GREEN_POINT);
+            on_light_green_piece = false;
         }
     } else if (on_dark_green_piece) {
-        if (isMouseOnGrid(x, y)) {
-            mouse.x = x;
-            mouse.y = y;
-            dark_green_piece->setMainCoord(mouse);
+        if (isMouseOnGrid(x, y) && isPieceOnGrid(x, y, dark_green_piece)) {
+            ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_DARK_GREEN_POINT, is_darkgreen_piece_released);
+            dark_green_piece->setMainCoord(valid_point);
             on_dark_green_piece = false;
-            is_darkgreen_piece_released = true;
+            score += 3;
             this->update();
         } else {
             dark_green_piece->setMainCoord(DEFAULT_DARK_GREEN_POINT);
+            on_dark_green_piece = false;
         }
     } else if (on_blue_piece) {
-        if (isMouseOnGrid(x, y)) {
-            mouse.x = x;
-            mouse.y = y;
-            blue_piece->setMainCoord(mouse);
+        if (isMouseOnGrid(x, y) && isPieceOnGrid(x, y, blue_piece)) {
+            ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_BLUE_POINT, is_blue_piece_released);
+            blue_piece->setMainCoord(valid_point);
             on_blue_piece = false;
-            is_blue_piece_released = true;
+            score += 9;
             this->update();
         } else {
             blue_piece->setMainCoord(DEFAULT_BLUE_POINT);
+            on_blue_piece = false;
         }
     } else if (on_orange_piece) {
-        if (isMouseOnGrid(x, y)) {
-            mouse.x = x;
-            mouse.y = y;
-            orange_piece->setMainCoord(mouse);
+        if (isMouseOnGrid(x, y) && isPieceOnGrid(x, y, orange_piece)) {
+            ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_BLUE_POINT, is_orange_piece_released);
+            orange_piece->setMainCoord(valid_point);
             on_orange_piece = false;
-            is_orange_piece_released = true;
+            score += 3;
             this->update();
         } else {
             orange_piece->setMainCoord(DEFAULT_ORANGE_POINT);
+            on_orange_piece = false;
+            this->update();
         }
     }
 }
@@ -183,6 +184,34 @@ bool ofApp::isMouseOnGrid(int mouseX, int mouseY) { //checks if mouse with objec
         return true;
     }
     return false;
+}
+
+bool ofApp::isPieceOnGrid(int mouseX, int mouseY, Piece* any_piece) {
+    if ((mouseX + any_piece->getPieceWidth() >= GRID_X)
+        && (mouseX + any_piece->getPieceWidth() <= GRID_X + GRID_LENGTH)
+        && (mouseY + any_piece->getPieceHeight() >= GRID_Y)
+        && (mouseY + any_piece->getPieceHeight() <= GRID_Y + GRID_LENGTH)) {
+        return true;
+    }
+    return false;
+}
+
+ofPoint ofApp::getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piece_point, bool& is_piece_released) {
+    ofPoint valid_point;
+    //256-656 x; f(x) = 40x + 256;  f(x) <= 656; x must be a positive integer
+    //128-528 y: t(d) = 40d + 128; t(d) <= 528
+    for (int x = GRID_X; x < (GRID_X + GRID_LENGTH); x += BLOCK_HEIGHT) {
+        for (int y = GRID_Y; y < (GRID_Y + GRID_LENGTH); y += BLOCK_HEIGHT) {
+            if ((x > (mouseX - 20) && x < (mouseX + 20)) && (y > (mouseY - 20) && y < (mouseY + 20))) {
+                valid_point = ofPoint(x, y);
+                is_piece_released = true;
+            }
+        }
+    }
+    if (valid_point.x == 0 && valid_point.y == 0) {
+        valid_point = default_piece_point;
+    }
+    return valid_point;
 }
 
 //--------------------------------------------------------------

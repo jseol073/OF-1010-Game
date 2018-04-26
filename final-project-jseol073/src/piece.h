@@ -31,6 +31,8 @@ private:
     const int HEIGHT = 40;
     const int grid_length = 400;
     const int grid_width = 400;
+    int piece_width;
+    int piece_height;
     string bit_shape;
     ofPoint main_point; //top-left corner of piece
     ofPoint most_bottom;
@@ -55,6 +57,10 @@ public:
     vector<vector<Block>> makeShape();
     vector<vector<Block>> getShape();
     ofPoint getMainPoint();
+    ofPoint getMostBottomPoint();
+    ofPoint getMostRightPoint();
+    int getPieceWidth();
+    int getPieceHeight();
     void setMainCoord(ofPoint new_point);
     Piece& operator=(const Piece& piece);
     bool operator==(const Piece& piece);
