@@ -12,3 +12,6 @@ So, my next task would be to finish the mouse functions and then apply the logic
 Fixed bugs when generating some pieces.
 I added mouse functions such that a user can click and drag on a piece to the grid. So when a user drops a piece that is not on the grid then sets the piece to where it started. Also, when a piece gets dropped on the grid, I added a feature so that the piece cannot be moved by the user.
 My next task would be to, when a user drops a piece on the grid, store the where the pieces are on the grid in order to check when a row or column is full.
+
+(4/26)
+Finished with the mouse functions, so now the user can drag a piece to only the valid coordinates of the grid. Also, added a score variable in which the score will increase by a certain number depending on which piece gets put on the grid (red piece: 2 points, blue piece: 9 points...). Next task is to update the binary_grid (2d vector) when a piece is added on the grid so that another piece cannot overlap another piece and to detect when a row or column is filled.
