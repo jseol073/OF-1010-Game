@@ -26,7 +26,8 @@ private:
     const ofPoint DEFAULT_ORANGE_POINT = ofPoint(900, 600);
     Grid my_grid;
     vector<vector<int>> binary_grid;
-    
+    vector<int> filled_row; //vector of int filled with 1's
+    vector<int> zero_row; //vector of int filled with 0's
     //Pieces:
     Piece* red_piece = new RedPiece(DEFAULT_RED_POINT);
     Piece* light_green_piece = new LightGreenPiece(DEFAULT_LIGHT_GREEN_POINT);
@@ -52,6 +53,7 @@ public:
 		void setup();
         void reset();
 		void update();
+    void setColumnToAllZeroes(int col);
 		void draw();
 
     bool isMouseOnGrid(int mouseX, int mouseY);

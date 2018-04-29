@@ -7,20 +7,22 @@ void ofApp::setup(){
     ofSetFrameRate(60);
     my_grid.setup();
     
-    //set binary_grid to all zeros, 10x10
+    //sets binary_grid to all zeros, 10x10
+    //sets filled_row to all 1's
+    //sets zero_row to all 0's
     binary_grid.resize(10);
     for (int i = 0; i < 10; i++) {
         binary_grid[i].resize(10);
+        filled_row.push_back(1);
+        zero_row.push_back(0);
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    my_grid.setBinaryGrid(binary_grid);
-    //if all pieces are released, then new set of pieces can be moved by user
+    //if all pieces are released, then the new set of pieces can be moved by user
     if (is_red_piece_released && is_lightgreen_piece_released && is_darkgreen_piece_released
         && is_blue_piece_released && is_orange_piece_released) {
-        
         on_red_piece = false;
         on_dark_green_piece = false;
         on_light_green_piece = false;
@@ -32,27 +34,113 @@ void ofApp::update(){
         is_blue_piece_released = false;
         is_orange_piece_released = false;
     }
-    my_grid.update(); //updated binary_grid in my_grid class
+    
+    //check if any rows or columns of binary_grid is filled with 1's
+    //if they are, then add score by ten and then set those 1's to 0's
+    int col = 0;
+    for (int row = 0; row < binary_grid.size(); row++) {
+        if (binary_grid[row] == filled_row) { //checks if a row is filled with 1's
+            score += 10;
+            binary_grid[row] = zero_row;
+        }
+        
+        //check if any columns are filled with 1's
+        int count = 0; //counts
+        for (int row1 = 0; row1 < binary_grid.size(); row1++) {
+            if (binary_grid[row1][col] == 1) {
+                count++;
+            }
+            if (count == 10) {
+                count = 0;
+                score += 10;
+                setColumnToAllZeroes(col); //sets columns to 0's
+            }
+        }
+        col++;
+    }
+    my_grid.setBinaryGrid(binary_grid); //updates the binary_grid of my_grid
+}
+
+//helper method for update()
+//sets the particular column of binary_grid to be all 0's
+void ofApp::setColumnToAllZeroes(int col) {
+    for (int row1 = 0; row1 < binary_grid.size(); row1++) {
+        binary_grid[row1][col] = 0;
+    }
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){ //TODO: update grid when row/column is filled
-    my_grid.draw();
-    red_piece->draw();
-    light_green_piece->draw();
-    dark_green_piece->draw();
-    blue_piece->draw();
-    orange_piece->draw();
+//called whenever user presses the reset button
+void ofApp::reset() {
+    score = 0;
+    store_done_pieces.clear();
+    on_red_piece = false;
+    on_dark_green_piece = false;
+    on_light_green_piece = false;
+    on_blue_piece = false;
+    on_orange_piece = false;
+    is_red_piece_released = false;
+    is_lightgreen_piece_released = false;
+    is_darkgreen_piece_released = false;
+    is_blue_piece_released = false;
+    is_orange_piece_released = false;
     
-    //still draw released pieces
+    //set binary_grid to all zeros, 10x10
+    binary_grid.resize(10);
+    for (int i = 0; i < 10; i++) {
+        binary_grid[i].resize(10);
+        filled_row.push_back(1);
+        zero_row.push_back(0);
+    }
+    my_grid.setBinaryGrid(binary_grid);
+}
+
+//--------------------------------------------------------------
+void ofApp::draw(){
+    //displays the score:
+    ofDrawBitmapString("score: " + std::to_string(score), ofGetWindowWidth() / 2, ofGetWindowWidth() / 2);
+    
+    //if piece that is on the grid is already released, then draw behind the grid:
+    if (!on_red_piece) {
+        red_piece->draw();
+    }
+    if (!on_light_green_piece) {
+        light_green_piece->draw();
+    }
+    if (!on_dark_green_piece) {
+        dark_green_piece->draw();
+    }
+    if (!on_blue_piece) {
+        blue_piece->draw();
+    }
+    if (!on_orange_piece) {
+        orange_piece->draw();
+    }
+    
+    //still draw released pieces on the grid
     if (!store_done_pieces.empty()) {
         for (Piece* piece : store_done_pieces) {
             piece->draw();
         }
     }
+    my_grid.draw();
     
-    //displays the score:
-    ofDrawBitmapString("score: " + std::to_string(score), ofGetWindowWidth(), ofGetWindowWidth());
+    //if mouse if currently dragging the piece, then draw piece over the grid:
+    if (on_red_piece) {
+        red_piece->draw();
+    }
+    if (on_light_green_piece) {
+        light_green_piece->draw();
+    }
+    if (on_dark_green_piece) {
+        dark_green_piece->draw();
+    }
+    if (on_blue_piece) {
+        blue_piece->draw();
+    }
+    if (on_orange_piece) {
+        orange_piece->draw();
+    }
 }
 
 //--------------------------------------------------------------
@@ -221,7 +309,7 @@ bool ofApp::isPieceOnGrid(int mouseX, int mouseY, Piece* any_piece) {
     return false;
 }
 
-//
+//returns ofPoint that is 1/100 valid points of the grid
 ofPoint ofApp::getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piece_point, bool& is_piece_released, Piece* which_piece) {
     ofPoint valid_point;
     int grid_x_index = 0; //x index of binary_grid
@@ -251,6 +339,7 @@ ofPoint ofApp::getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piec
     return valid_point;
 }
 
+//helper method for getNearestValidPoint
 //checks if piece overlaps another piece
 bool ofApp::doesPieceOverlap(int grid_x, int grid_y, Piece* which_piece) {
     vector<vector<Block>> piece_shape = which_piece->getShape();
@@ -264,6 +353,8 @@ bool ofApp::doesPieceOverlap(int grid_x, int grid_y, Piece* which_piece) {
     return false;
 }
 
+//helper method for getNearestValidPoint
+//sets the particular elements (defined by the shape of the piece) of binary_grid to be 1
 void ofApp::setBinaryGrid(const int grid_x, const int grid_y, Piece* which_piece, ofPoint& valid_point) {
     int copy_x = grid_x;
     int copy_y = grid_y;
