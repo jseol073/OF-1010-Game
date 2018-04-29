@@ -15,3 +15,6 @@ My next task would be to, when a user drops a piece on the grid, store the where
 
 (4/26)
 Finished with the mouse functions, so now the user can drag a piece to only the valid coordinates of the grid. Also, added a score variable in which the score will increase by a certain number depending on which piece gets put on the grid (red piece: 2 points, blue piece: 9 points...). Next task is to update the binary_grid (2d vector) when a piece is added on the grid so that another piece cannot overlap another piece and to detect when a row or column is filled.
+
+(4/29) 
+I made sure to update the binary_grid accordingly when a user releases a piece on the grid so that the piece will be represented as 1's on the binary_grid. With that, I also made sure a piece cannot overlap another piece by checking if that piece being added is already on a 1 (or more 1's) on the binary_grid. The next task will be to check if a row or column on the binary_grid is completely filled with all 1's. In that case, add score by ten and update the binary_grid so that those 1's will be 0's, and, finally, draw the background blocks to be over the row/column that is filled.
