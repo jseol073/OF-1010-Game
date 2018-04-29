@@ -11,17 +11,19 @@
 //also adds 0's to binary_grid (2d vector)
 //binary_grid is updated when a piece is on the dimensions of the grid
 void Grid::setup() {
+    binary_grid.resize(10);
     for (int r = 0; r < ROWS; r++) {
         vector<ofImage> row_vector;
-        vector<int> row_binary;
+        //vector<int> row_binary;
+        binary_grid[r].resize(10);
         for (int w = 0; w < COLS; w++) {
             ofImage background_block;
             background_block.load("/Users/johnseol/cs_126/final-project-jseol073/finalproject_images/background_block.png");
             row_vector.push_back(background_block);
-            row_binary.push_back(0);
+            //row_binary.push_back(0);
         }
         grid_vector.push_back(row_vector);
-        binary_grid.push_back(row_binary);
+        //binary_grid.push_back(row_binary);
     }
 }
 

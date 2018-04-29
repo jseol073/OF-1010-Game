@@ -66,6 +66,7 @@ void Piece::draw() {
     ofPoint temp_coord;
     temp_coord.x = main_point.x;
     temp_coord.y = main_point.y;
+    
     for (int r = 0; r < actual_shape.size(); r++) {
         for (int c = 0; c < actual_shape[r].size(); c++) {
             actual_shape[r][c].setCoord(temp_coord); //sets coordinates for each block
