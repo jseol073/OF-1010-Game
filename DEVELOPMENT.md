@@ -18,3 +18,6 @@ Finished with the mouse functions, so now the user can drag a piece to only the 
 
 (4/29) 
 I made sure to update the binary_grid accordingly when a user releases a piece on the grid so that the piece will be represented as 1's on the binary_grid. With that, I also made sure a piece cannot overlap another piece by checking if that piece being added is already on a 1 (or more 1's) on the binary_grid. The next task will be to check if a row or column on the binary_grid is completely filled with all 1's. In that case, add score by ten and update the binary_grid so that those 1's will be 0's, and, finally, draw the background blocks to be over the row/column that is filled.
+
+(4/29)
+Completely finished with the logic of the game. So, when a row or column is filled with blocks, then I clear those blocks and add the score by 10. So, I finished the task mentioned previously. In addition, I added the gui components such as displaying the score using ofxLabel, using a slider to change the volume, a reset button, a button to display the leaderboard, and added music to it by using ofSoundPlayer. So, these components were also mentioned in my proposal.md. My next task will be to properly display the top ten scores.
