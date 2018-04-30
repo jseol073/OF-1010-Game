@@ -26,7 +26,8 @@ void Piece::clear() {
 
 //splits a string specified by delimiter
 //helper method for makeShape
-//got method from https://stackoverflow.com/questions/13172158/c-split-string-by-line?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+//got method from
+//https://stackoverflow.com/questions/13172158/c-split-string-by-line?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 std::vector<std::string> Piece::split_string(const std::string& str, const std::string& delimiter) {
     std::vector<std::string> strings;
     std::string::size_type pos = 0;
@@ -106,18 +107,6 @@ void Piece::setMainCoord(ofPoint new_point) {
     }
 }
 
-bool Piece::getIsPieceDragged() {
-    return is_piece_dragged;
-}
-
-bool Piece::getIsPiecePressed() {
-    return is_piece_pressed;
-}
-
-bool Piece::getIsPieceReleased() {
-    return is_piece_released;
-}
-
 ofPoint Piece::getMainPoint() {
     return this->main_point;
 }
@@ -137,33 +126,6 @@ int Piece::getPieceWidth() {
 int Piece::getPieceHeight() {
     return this->piece_height;
 }
-
-void Piece::setIsPieceDragged(bool new_is_dragged) {
-    is_piece_dragged = new_is_dragged;
-}
-
-void Piece::setIsPiecePressed(bool new_is_pressed) {
-    is_piece_pressed = new_is_pressed;
-}
-
-void Piece::setIsPieceReleased(bool new_is_released) {
-    is_piece_released = new_is_released;
-}
-
-//bool Piece::operator==(const Piece& piece) {
-//    if (this->color != piece.color) {
-//        return false;
-//    }
-//    return true;
-//}
-//
-//Piece& Piece::operator=(const Piece& piece) {
-//    if ((*this) == piece) {
-//        return *this;
-//    }
-//    clear();
-//
-//}
 
 //initializing subclasses:
 //initialize bit_shape in accordance with its actual shape

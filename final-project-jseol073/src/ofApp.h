@@ -31,6 +31,8 @@ private:
     const int GRID_X = 258;
     const int GRID_Y = 128;
     const int GRID_LENGTH = 400;
+    const int LEADERBOARD_POINT_X = 700;
+    const int LEADERBOARD_POINT_Y = 50;
     const ofPoint DEFAULT_GRID_POINT = ofPoint(256, 128);
     const ofPoint DEFAULT_RED_POINT = ofPoint(100, 600);
     const ofPoint DEFAULT_LIGHT_GREEN_POINT = ofPoint(300, 600);
@@ -67,6 +69,7 @@ private:
     string score_str = std::to_string(score);
     
     //gui:
+    ofTrueTypeFont myfont;
     bool is_leaderboard_pressed = false;
     std::string top_ten_str;
     ofxPanel gui;
@@ -87,7 +90,7 @@ public:
     bool isPieceOnGrid(int mouseX, int mouseY, Piece* any_piece);
     ofPoint getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piece_point, bool& is_piece_released, Piece* which_piece);
     bool doesPieceOverlap(int valid_point_x, int valid_point_y, Piece* which_piece);
-    void setBinaryGrid(const int grid_x, const int grid_y, Piece* which_piece, ofPoint& valid_point);
+    void setBinaryGrid(const int grid_x, const int grid_y, Piece* which_piece);
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );

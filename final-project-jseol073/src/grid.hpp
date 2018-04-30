@@ -18,6 +18,8 @@ private:
     vector<vector<ofImage>> grid_vector;
     vector<vector<int>> binary_grid;
     ofPoint coord;
+    const int DEFAULT_GRID_X = 256;
+    const int DEFAULT_GRID_Y = 128;
     const int HEIGHT = 40;
     const int WIDTH = 40;
     const int ROWS = 10;

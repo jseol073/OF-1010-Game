@@ -38,8 +38,8 @@ void Grid::setBinaryGrid(vector<vector<int>> new_binary_grid) {
  Draws a 10x10 grid
  */
 void Grid::draw() {
-    coord.x = 256;
-    coord.y = 128;
+    coord.x = DEFAULT_GRID_X;
+    coord.y = DEFAULT_GRID_Y;
     
     for (int r = 0; r < grid_vector.size(); r++) {
         for (int w = 0; w < grid_vector[r].size(); w++) {

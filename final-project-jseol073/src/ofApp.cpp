@@ -27,6 +27,7 @@ void ofApp::setup(){
     leaderboard_button.addListener(this, &ofApp::leaderBoardButtonPressed);
     gui.add(volume_slider.setup("Volume", DEFAULT_VOLUME, 0, MAX_VOLUME));
     volume_slider.addListener(this, &ofApp::setVolumeSlider);
+    myfont.load("/Users/johnseol/Downloads/dustismo-roman/Dustismo_Roman.ttf", 32);
     
     //setup music:
     music.load("/Users/johnseol/Downloads/G-Eazy feat. Yo Gotti & YBN Nahmir - 1942 www.my-free-mp3.net .mp3");
@@ -54,9 +55,14 @@ void ofApp::update(){
     score_str = std::to_string(score);
     score_label.setup("Score", score_str);
     
-    //if all pieces are released, then the new set of pieces can be moved by user
+    //if all pieces are released, then new set of pieces are made and can be moved by user
     if (is_red_piece_released && is_lightgreen_piece_released && is_darkgreen_piece_released
         && is_blue_piece_released && is_orange_piece_released) {
+        red_piece = new RedPiece(DEFAULT_RED_POINT);
+        light_green_piece = new LightGreenPiece(DEFAULT_LIGHT_GREEN_POINT);
+        dark_green_piece = new DarkGreenPiece(DEFAULT_DARK_GREEN_POINT);
+        blue_piece = new BluePiece(DEFAULT_BLUE_POINT);
+        orange_piece = new OrangePiece(DEFAULT_ORANGE_POINT);
         on_red_piece = false;
         on_dark_green_piece = false;
         on_light_green_piece = false;
@@ -107,13 +113,15 @@ void ofApp::setColumnToAllZeroes(int col) {
 //takes top_ten_scores and returns a string
 std::string ofApp::vectorToString(vector<int> top_ten_scores) {
     string vector_to_str;
+    int rank = 1;
     if (top_ten_scores.size() >= MAX_NUM_GAMES) {
         for (int i = 0; i < MAX_NUM_GAMES; i++) {
-            vector_to_str.append(std::to_string(top_ten_scores.at(i)) + "\n");
+            vector_to_str.append(std::to_string(i + 1) + ".) " + std::to_string(top_ten_scores.at(i)) + "\n");
         }
     } else {
         for (auto num : top_ten_scores) {
-            vector_to_str.append(std::to_string(num) + "\n");
+            vector_to_str.append(std::to_string(rank) + ".) " + std::to_string(num) + "\n");
+            rank++;
         }
     }
     return vector_to_str;
@@ -140,6 +148,12 @@ void ofApp::reset() {
     //reset variables to default:
     score = 0;
     store_done_pieces.clear();
+    //pointers of pieces set to new objects that are in default positions
+    red_piece = new RedPiece(DEFAULT_RED_POINT);
+    light_green_piece = new LightGreenPiece(DEFAULT_LIGHT_GREEN_POINT);
+    dark_green_piece = new DarkGreenPiece(DEFAULT_DARK_GREEN_POINT);
+    blue_piece = new BluePiece(DEFAULT_BLUE_POINT);
+    orange_piece = new OrangePiece(DEFAULT_ORANGE_POINT);
     on_red_piece = false;
     on_dark_green_piece = false;
     on_light_green_piece = false;
@@ -200,7 +214,9 @@ void ofApp::draw(){
     
     //if leaderboard_button is pressed, then display top ten scores
     if(is_leaderboard_pressed) {
-        ofDrawBitmapString("Top Ten: " + top_ten_str, 500, 0);
+        ofSetColor(0,0,0); //set font to black
+        myfont.drawString("LeaderBoard: \n" + top_ten_str, LEADERBOARD_POINT_X, LEADERBOARD_POINT_Y);
+        ofSetColor(255, 255, 255); //set global color back to white
     }
 }
 
@@ -288,9 +304,10 @@ void ofApp::mouseReleased(int x, int y, int button){
         if (isMouseOnGrid(x, y) && isPieceOnGrid(x, y, red_piece)) { //then checks if mouse on the grid
             ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_RED_POINT, is_red_piece_released, red_piece);
             red_piece->setMainCoord(valid_point); //sets the piece to new valid point and then draws it
-            on_red_piece = false;
-            red_piece = new RedPiece(DEFAULT_RED_POINT); //pointer set to new object that is in default position
-            score += RED_PIECE_SCORE; //add to score (based on piece size) if piece released onto grid
+            on_red_piece = false; //mouse is no longer dragging that piece
+            if (valid_point != DEFAULT_RED_POINT) {
+                score += RED_PIECE_SCORE; //add to score (based on piece size) if piece released onto grid
+            }
             this->update();
         } else { //if mouse is not on grid then set the piece back to where it was
             red_piece->setMainCoord(DEFAULT_RED_POINT);
@@ -301,8 +318,9 @@ void ofApp::mouseReleased(int x, int y, int button){
             ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_LIGHT_GREEN_POINT, is_lightgreen_piece_released, light_green_piece);
             light_green_piece->setMainCoord(valid_point);
             on_light_green_piece = false;
-            light_green_piece = new LightGreenPiece(DEFAULT_LIGHT_GREEN_POINT);
-            score += LIGHT_GREEN_PIECE_SCORE;
+            if (valid_point != DEFAULT_LIGHT_GREEN_POINT) {
+                score += LIGHT_GREEN_PIECE_SCORE;
+            }
             this->update();
         } else {
             light_green_piece->setMainCoord(DEFAULT_LIGHT_GREEN_POINT);
@@ -313,8 +331,9 @@ void ofApp::mouseReleased(int x, int y, int button){
             ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_DARK_GREEN_POINT, is_darkgreen_piece_released, dark_green_piece);
             dark_green_piece->setMainCoord(valid_point);
             on_dark_green_piece = false;
-            dark_green_piece = new DarkGreenPiece(DEFAULT_DARK_GREEN_POINT);
-            score += DARK_GREEN_PIECE_SCORE;
+            if (valid_point != DEFAULT_DARK_GREEN_POINT) {
+                score += DARK_GREEN_PIECE_SCORE;
+            }
             this->update();
         } else {
             dark_green_piece->setMainCoord(DEFAULT_DARK_GREEN_POINT);
@@ -325,8 +344,9 @@ void ofApp::mouseReleased(int x, int y, int button){
             ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_BLUE_POINT, is_blue_piece_released, blue_piece);
             blue_piece->setMainCoord(valid_point);
             on_blue_piece = false;
-            blue_piece = new BluePiece(DEFAULT_BLUE_POINT);
-            score += BLUE_PIECE_SCORE;
+            if (valid_point != DEFAULT_BLUE_POINT) {
+                score += BLUE_PIECE_SCORE;
+            }
             this->update();
         } else {
             blue_piece->setMainCoord(DEFAULT_BLUE_POINT);
@@ -337,8 +357,9 @@ void ofApp::mouseReleased(int x, int y, int button){
             ofPoint valid_point = getNearestValidPoint(x, y, DEFAULT_ORANGE_POINT, is_orange_piece_released, orange_piece);
             orange_piece->setMainCoord(valid_point);
             on_orange_piece = false;
-            orange_piece = new OrangePiece(DEFAULT_ORANGE_POINT);
-            score += ORANGE_PIECE_SCORE;
+            if (valid_point != DEFAULT_ORANGE_POINT) {
+                score += ORANGE_PIECE_SCORE;
+            }
             this->update();
         } else {
             orange_piece->setMainCoord(DEFAULT_ORANGE_POINT);
@@ -382,7 +403,7 @@ ofPoint ofApp::getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piec
             if ((x > (mouseX - 20) && x < (mouseX + 20)) && (y > (mouseY - 20) && y < (mouseY + 20))
                 && !doesPieceOverlap(grid_x_index, grid_y_index, which_piece)) {
                 valid_point = ofPoint(x, y); //sets valid_point
-                setBinaryGrid(grid_x_index, grid_y_index, which_piece, valid_point); //updates binary_grid
+                setBinaryGrid(grid_x_index, grid_y_index, which_piece); //updates binary_grid
                 is_piece_released = true; //piece is released
                 store_done_pieces.push_back(which_piece); //after piece is released, store it into that vector
             }
@@ -416,7 +437,7 @@ bool ofApp::doesPieceOverlap(int grid_x, int grid_y, Piece* which_piece) {
 
 //helper method for getNearestValidPoint
 //sets the particular elements (defined by the shape of the piece) of binary_grid to be 1
-void ofApp::setBinaryGrid(const int grid_x, const int grid_y, Piece* which_piece, ofPoint& valid_point) {
+void ofApp::setBinaryGrid(const int grid_x, const int grid_y, Piece* which_piece) {
     int copy_x = grid_x;
     int copy_y = grid_y;
     vector<vector<Block>> piece_shape = which_piece->getShape(); //gets the shape of the piece as a 2d vector of Block objects
