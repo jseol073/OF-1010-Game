@@ -5,6 +5,9 @@
 #include "block.hpp"
 #include "piece.h"
 #include "ofEvents.h"
+#include "ofxGui.h"
+#include <string>
+#include <vector>
 
 enum GameState {
     IN_PROGRESS = 0,
@@ -13,7 +16,17 @@ enum GameState {
 
 class ofApp : public ofBaseApp{
 private:
-    const int BLOCK_HEIGHT = 40;
+    const int RED_PIECE_SCORE = 2;
+    const int LIGHT_GREEN_PIECE_SCORE = 4;
+    const int DARK_GREEN_PIECE_SCORE = 3;
+    const int BLUE_PIECE_SCORE = 9;
+    const int ORANGE_PIECE_SCORE = 3;
+    const int FILLED_SCORE = 10; //score when a row or column is filled with blocks
+    const int BINARY_GRID_SIZE = 10; //width and length
+    const int MAX_VOLUME = 300;
+    const int DEFAULT_VOLUME = 150;
+    const int MAX_NUM_GAMES = 10;
+    const int BLOCK_HEIGHT = 40; //by pixel length
     const int BLOCK_WIDTH = 40;
     const int GRID_X = 258;
     const int GRID_Y = 128;
@@ -25,9 +38,11 @@ private:
     const ofPoint DEFAULT_BLUE_POINT = ofPoint(700, 600);
     const ofPoint DEFAULT_ORANGE_POINT = ofPoint(900, 600);
     Grid my_grid;
+    
     vector<vector<int>> binary_grid;
     vector<int> filled_row; //vector of int filled with 1's
     vector<int> zero_row; //vector of int filled with 0's
+    
     //Pieces:
     Piece* red_piece = new RedPiece(DEFAULT_RED_POINT);
     Piece* light_green_piece = new LightGreenPiece(DEFAULT_LIGHT_GREEN_POINT);
@@ -48,7 +63,18 @@ private:
     bool is_blue_piece_released = false;
     bool is_orange_piece_released = false;
     int score = 0;
-    vector<vector<int>> top_ten_scores;
+    vector<int> top_ten_scores;
+    string score_str = std::to_string(score);
+    
+    //gui:
+    bool is_leaderboard_pressed = false;
+    std::string top_ten_str;
+    ofxPanel gui;
+    ofxButton reset_button;
+    ofxButton leaderboard_button;
+    ofxLabel score_label;
+    ofxFloatSlider volume_slider;
+    ofSoundPlayer music;
 public:
 		void setup();
         void reset();
@@ -74,4 +100,9 @@ public:
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+    //gui methods:
+    void resetButtonPressed();
+    void leaderBoardButtonPressed();
+    std::string vectorToString(vector<int> top_ten_scores);
+    void setVolumeSlider(float& volumeSlider);
 };

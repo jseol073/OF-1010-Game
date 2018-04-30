@@ -10,16 +10,50 @@ void ofApp::setup(){
     //sets binary_grid to all zeros, 10x10
     //sets filled_row to all 1's
     //sets zero_row to all 0's
-    binary_grid.resize(10);
-    for (int i = 0; i < 10; i++) {
-        binary_grid[i].resize(10);
+    binary_grid.resize(BINARY_GRID_SIZE);
+    for (int i = 0; i < BINARY_GRID_SIZE; i++) {
+        binary_grid[i].resize(BINARY_GRID_SIZE);
         filled_row.push_back(1);
         zero_row.push_back(0);
     }
+    
+    //gui setup:
+    ofSetVerticalSync(true);
+    gui.setup();
+    gui.add(reset_button.setup("reset"));
+    gui.add(leaderboard_button.setup("Leader Board"));
+    gui.add(score_label.setup("Score", score_str));
+    reset_button.addListener(this, &ofApp::resetButtonPressed);
+    leaderboard_button.addListener(this, &ofApp::leaderBoardButtonPressed);
+    gui.add(volume_slider.setup("Volume", DEFAULT_VOLUME, 0, MAX_VOLUME));
+    volume_slider.addListener(this, &ofApp::setVolumeSlider);
+    
+    //setup music:
+    music.load("/Users/johnseol/Downloads/G-Eazy feat. Yo Gotti & YBN Nahmir - 1942 www.my-free-mp3.net .mp3");
+    music.play();
+}
+
+//reset game when user presses reset_button
+void ofApp::resetButtonPressed() {
+    reset();
+}
+
+//sets this bool to true so the text for the top ten scores get displayed
+void ofApp::leaderBoardButtonPressed() {
+    is_leaderboard_pressed = true;
+}
+
+//sets the volume based on the volume_slider
+void ofApp::setVolumeSlider(float& volumeSlider) {
+    music.setVolume(volumeSlider);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    //updates score_label:
+    score_str = std::to_string(score);
+    score_label.setup("Score", score_str);
+    
     //if all pieces are released, then the new set of pieces can be moved by user
     if (is_red_piece_released && is_lightgreen_piece_released && is_darkgreen_piece_released
         && is_blue_piece_released && is_orange_piece_released) {
@@ -40,19 +74,19 @@ void ofApp::update(){
     int col = 0;
     for (int row = 0; row < binary_grid.size(); row++) {
         if (binary_grid[row] == filled_row) { //checks if a row is filled with 1's
-            score += 10;
+            score += FILLED_SCORE;
             binary_grid[row] = zero_row;
         }
         
         //check if any columns are filled with 1's
-        int count = 0; //counts
+        int count = 0; //counts number of 1's for the column
         for (int row1 = 0; row1 < binary_grid.size(); row1++) {
             if (binary_grid[row1][col] == 1) {
                 count++;
             }
-            if (count == 10) {
+            if (count == FILLED_SCORE) { //if 10 elements are 1's, then add score by 10 and set those elements back to 0's
                 count = 0;
-                score += 10;
+                score += FILLED_SCORE;
                 setColumnToAllZeroes(col); //sets columns to 0's
             }
         }
@@ -69,9 +103,41 @@ void ofApp::setColumnToAllZeroes(int col) {
     }
 }
 
+//helper method in reset()
+//takes top_ten_scores and returns a string
+std::string ofApp::vectorToString(vector<int> top_ten_scores) {
+    string vector_to_str;
+    if (top_ten_scores.size() >= MAX_NUM_GAMES) {
+        for (int i = 0; i < MAX_NUM_GAMES; i++) {
+            vector_to_str.append(std::to_string(top_ten_scores.at(i)) + "\n");
+        }
+    } else {
+        for (auto num : top_ten_scores) {
+            vector_to_str.append(std::to_string(num) + "\n");
+        }
+    }
+    return vector_to_str;
+}
+
 //--------------------------------------------------------------
 //called whenever user presses the reset button
 void ofApp::reset() {
+    is_leaderboard_pressed = false;
+    //set binary_grid back to all zeros, 10x10
+    for (int row = 0; row < binary_grid.size(); row++) {
+        for (int col = 0; col < binary_grid[row].size(); col++) {
+            binary_grid[row][col] = 0;
+        }
+    }
+    my_grid.setBinaryGrid(binary_grid);
+    
+    //when game is reset, put recent score into top_ten_scores vector
+    top_ten_scores.push_back(score);
+    std::sort(top_ten_scores.begin(), top_ten_scores.end());
+    std::reverse(top_ten_scores.begin(), top_ten_scores.end());
+    top_ten_str = vectorToString(top_ten_scores); //makes vector as a string
+    
+    //reset variables to default:
     score = 0;
     store_done_pieces.clear();
     on_red_piece = false;
@@ -84,21 +150,11 @@ void ofApp::reset() {
     is_darkgreen_piece_released = false;
     is_blue_piece_released = false;
     is_orange_piece_released = false;
-    
-    //set binary_grid to all zeros, 10x10
-    binary_grid.resize(10);
-    for (int i = 0; i < 10; i++) {
-        binary_grid[i].resize(10);
-        filled_row.push_back(1);
-        zero_row.push_back(0);
-    }
-    my_grid.setBinaryGrid(binary_grid);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    //displays the score:
-    ofDrawBitmapString("score: " + std::to_string(score), ofGetWindowWidth() / 2, ofGetWindowWidth() / 2);
+    gui.draw();
     
     //if piece that is on the grid is already released, then draw behind the grid:
     if (!on_red_piece) {
@@ -140,6 +196,11 @@ void ofApp::draw(){
     }
     if (on_orange_piece) {
         orange_piece->draw();
+    }
+    
+    //if leaderboard_button is pressed, then display top ten scores
+    if(is_leaderboard_pressed) {
+        ofDrawBitmapString("Top Ten: " + top_ten_str, 500, 0);
     }
 }
 
@@ -229,7 +290,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             red_piece->setMainCoord(valid_point); //sets the piece to new valid point and then draws it
             on_red_piece = false;
             red_piece = new RedPiece(DEFAULT_RED_POINT); //pointer set to new object that is in default position
-            score += 2; //add to score (based on piece size) if piece released onto grid
+            score += RED_PIECE_SCORE; //add to score (based on piece size) if piece released onto grid
             this->update();
         } else { //if mouse is not on grid then set the piece back to where it was
             red_piece->setMainCoord(DEFAULT_RED_POINT);
@@ -241,7 +302,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             light_green_piece->setMainCoord(valid_point);
             on_light_green_piece = false;
             light_green_piece = new LightGreenPiece(DEFAULT_LIGHT_GREEN_POINT);
-            score += 4;
+            score += LIGHT_GREEN_PIECE_SCORE;
             this->update();
         } else {
             light_green_piece->setMainCoord(DEFAULT_LIGHT_GREEN_POINT);
@@ -253,7 +314,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             dark_green_piece->setMainCoord(valid_point);
             on_dark_green_piece = false;
             dark_green_piece = new DarkGreenPiece(DEFAULT_DARK_GREEN_POINT);
-            score += 3;
+            score += DARK_GREEN_PIECE_SCORE;
             this->update();
         } else {
             dark_green_piece->setMainCoord(DEFAULT_DARK_GREEN_POINT);
@@ -265,7 +326,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             blue_piece->setMainCoord(valid_point);
             on_blue_piece = false;
             blue_piece = new BluePiece(DEFAULT_BLUE_POINT);
-            score += 9;
+            score += BLUE_PIECE_SCORE;
             this->update();
         } else {
             blue_piece->setMainCoord(DEFAULT_BLUE_POINT);
@@ -277,7 +338,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             orange_piece->setMainCoord(valid_point);
             on_orange_piece = false;
             orange_piece = new OrangePiece(DEFAULT_ORANGE_POINT);
-            score += 3;
+            score += ORANGE_PIECE_SCORE;
             this->update();
         } else {
             orange_piece->setMainCoord(DEFAULT_ORANGE_POINT);
@@ -309,7 +370,7 @@ bool ofApp::isPieceOnGrid(int mouseX, int mouseY, Piece* any_piece) {
     return false;
 }
 
-//returns ofPoint that is 1/100 valid points of the grid
+//returns ofPoint that is 1 of the 100 valid points of the grid (returns if mouse is hovering over the closest "valid point")
 ofPoint ofApp::getNearestValidPoint(int mouseX, int mouseY, ofPoint default_piece_point, bool& is_piece_released, Piece* which_piece) {
     ofPoint valid_point;
     int grid_x_index = 0; //x index of binary_grid
