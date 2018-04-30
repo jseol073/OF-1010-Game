@@ -23,4 +23,4 @@ I made sure to update the binary_grid accordingly when a user releases a piece o
 Completely finished with the logic of the game. So, when a row or column is filled with blocks, then I clear those blocks and add the score by 10. So, I finished the task mentioned previously. In addition, I added the gui components such as displaying the score using ofxLabel, using a slider to change the volume, a reset button, a button to display the leaderboard, and added music to it by using ofSoundPlayer. So, these components were also mentioned in my proposal.md. My next task will be to properly display the top ten scores.
 
 (4/30)
-Leader board can now be displayed on the left of the window when the user presses the leader board button. I also fixed a bug which happens when a piece is not at a valid point on the grid but the score is still increased. 
+Leader board can now be displayed on the left of the window when the user presses the leader board button. I used ofTrueTypeFont as the font of the text for the leaderboard which I downloaded on my computer. I also fixed a bug which happens when a piece is not at a valid point on the grid but the score is still increased. 
