@@ -69,7 +69,7 @@ private:
     string score_str = std::to_string(score);
     
     //gui:
-    ofTrueTypeFont myfont;
+    ofTrueTypeFont leader_board_font;
     bool is_leaderboard_pressed = false;
     std::string top_ten_str;
     ofxPanel gui;

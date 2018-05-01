@@ -27,7 +27,7 @@ void ofApp::setup(){
     leaderboard_button.addListener(this, &ofApp::leaderBoardButtonPressed);
     gui.add(volume_slider.setup("Volume", DEFAULT_VOLUME, 0, MAX_VOLUME));
     volume_slider.addListener(this, &ofApp::setVolumeSlider);
-    myfont.load("/Users/johnseol/Downloads/dustismo-roman/Dustismo_Roman.ttf", 32);
+    leader_board_font.load("/Users/johnseol/Downloads/dustismo-roman/Dustismo_Roman.ttf", 32);
     
     //setup music:
     music.load("/Users/johnseol/Downloads/G-Eazy feat. Yo Gotti & YBN Nahmir - 1942 www.my-free-mp3.net .mp3");
@@ -215,7 +215,7 @@ void ofApp::draw(){
     //if leaderboard_button is pressed, then display top ten scores
     if(is_leaderboard_pressed) {
         ofSetColor(0,0,0); //set font to black
-        myfont.drawString("LeaderBoard: \n" + top_ten_str, LEADERBOARD_POINT_X, LEADERBOARD_POINT_Y);
+        leader_board_font.drawString("LeaderBoard: \n" + top_ten_str, LEADERBOARD_POINT_X, LEADERBOARD_POINT_Y);
         ofSetColor(255, 255, 255); //set global color back to white
     }
 }
