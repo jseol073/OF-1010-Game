@@ -7,3 +7,7 @@ Possibly, I'll add a **slider** that configures the difficulty and/or the pace o
 A lot of keyboard buttons will be used which means methods from **ofxButtons.h**.
 I'm also planning to add music in the background which uses **ofSoundPlayer**.
 Moreover, I'm implementing some sort of leaderboard similar to this weeks assignment.
+
+EDIT:
+I decided to make slight changes to my project. I'm planning to make a clone of 1010! which is a game similar to tetris so half of the process of this project will be basically identical if I still chose to do tetris. The differences are that the pieces will be clicked and dragged by the mouse instead of them being dropped down by the keyboard keys, and that the grid will be 10 x 10 instead of 20 X 10. 
+So, the libraries I mentioned previously will all still be used in addition to the click and drag libraries for the mouse.
