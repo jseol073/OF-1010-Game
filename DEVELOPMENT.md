@@ -24,3 +24,6 @@ Completely finished with the logic of the game. So, when a row or column is fill
 
 (4/30)
 Leader board can now be displayed on the left of the window when the user presses the leader board button. I used ofTrueTypeFont as the font of the text for the leaderboard which I downloaded on my computer. I also fixed a bug which happens when a piece is not at a valid point on the grid but the score is still increased. 
+
+(5/1)
+I added testcases using catch which tests when a row/column gets cleared correctly. I also updated the README.md with pictures and description of my game. I also added 2 sound effects, one for when a piece gets added and the other for when a row/column is cleared.
