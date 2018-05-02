@@ -11,10 +11,6 @@
 #include "test.hpp"
 #include <iostream>
 
-int main() {
-    return 0;
-}
-
 TEST_CASE("2D binary grid, check when rows or columns are filled and if updated") {
     ofApp test_game;
     const int GRID_WIDTH = 10;
