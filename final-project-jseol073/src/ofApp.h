@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
 #include "grid.hpp"
 #include "block.hpp"
 #include "piece.h"
@@ -8,11 +7,6 @@
 #include "ofxGui.h"
 #include <string>
 #include <vector>
-
-enum GameState {
-    IN_PROGRESS = 0,
-    PAUSED
-};
 
 class ofApp : public ofBaseApp{
 private:
@@ -39,8 +33,8 @@ private:
     const ofPoint DEFAULT_DARK_GREEN_POINT = ofPoint(500, 600);
     const ofPoint DEFAULT_BLUE_POINT = ofPoint(700, 600);
     const ofPoint DEFAULT_ORANGE_POINT = ofPoint(900, 600);
-    Grid my_grid;
     
+    Grid my_grid;
     vector<vector<int>> binary_grid;
     vector<int> filled_row; //vector of int filled with 1's
     vector<int> zero_row; //vector of int filled with 0's
@@ -102,6 +96,8 @@ public:
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+    void setNewBinaryGrid(vector<vector<int>> new_binary_grid); //ONLY for testing
+    vector<vector<int>> getBinaryGrid(); //ONLY for testing
 		
     //gui methods:
     void resetButtonPressed();

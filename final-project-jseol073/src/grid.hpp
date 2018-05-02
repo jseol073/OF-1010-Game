@@ -8,7 +8,7 @@
 #ifndef grid_hpp
 #define grid_hpp
 
-#include "ofMain.h"
+//#include "ofMain.h"
 #include "piece.h"
 #include <stdio.h>
 #include <vector>

@@ -448,6 +448,16 @@ void ofApp::setBinaryGrid(const int grid_x, const int grid_y, Piece* which_piece
     }
 }
 
+//setter for private var, binary_grid
+//ONLY used for testing binary_grid (logic of the game)
+void ofApp::setNewBinaryGrid(vector<vector<int>> new_binary_grid) {
+    binary_grid = new_binary_grid;
+}
+
+vector<vector<int>> ofApp::getBinaryGrid() {
+    return this->binary_grid;
+}
+
 //--------------------------------------------------------------
 void ofApp::mouseEntered(int x, int y){
 

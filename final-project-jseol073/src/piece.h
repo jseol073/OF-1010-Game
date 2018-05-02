@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
-#include "ofMain.h"
 #include "block.hpp"
 
 using namespace std;
