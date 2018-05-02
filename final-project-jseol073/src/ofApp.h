@@ -71,7 +71,8 @@ private:
     ofxButton leaderboard_button;
     ofxLabel score_label;
     ofxFloatSlider volume_slider;
-    ofSoundPlayer music;
+    ofSoundPlayer piece_added; //sound effect when a piece is added on the grid
+    ofSoundPlayer clear_blocks; //sound effect when a row/column gets cleared
 public:
 		void setup();
         void reset();

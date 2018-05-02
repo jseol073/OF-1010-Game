@@ -30,8 +30,8 @@ void ofApp::setup(){
     leader_board_font.load("/Users/johnseol/Downloads/dustismo-roman/Dustismo_Roman.ttf", 32);
     
     //setup music:
-    music.load("/Users/johnseol/Downloads/G-Eazy feat. Yo Gotti & YBN Nahmir - 1942 www.my-free-mp3.net .mp3");
-    music.play();
+    piece_added.load("/Users/johnseol/Downloads/zapsplat_multimedia_game_star_win_gain_x1_12387.mp3");
+    clear_blocks.load("/Users/johnseol/Downloads/little_robot_sound_factory_Collect_Point_01.mp3");
 }
 
 //reset game when user presses reset_button
@@ -46,7 +46,8 @@ void ofApp::leaderBoardButtonPressed() {
 
 //sets the volume based on the volume_slider
 void ofApp::setVolumeSlider(float& volumeSlider) {
-    music.setVolume(volumeSlider);
+    piece_added.setVolume(volumeSlider);
+    clear_blocks.setVolume(volumeSlider);
 }
 
 //--------------------------------------------------------------
@@ -80,6 +81,7 @@ void ofApp::update(){
     int col = 0;
     for (int row = 0; row < binary_grid.size(); row++) {
         if (binary_grid[row] == filled_row) { //checks if a row is filled with 1's
+            clear_blocks.play(); //plays sound effect
             score += FILLED_SCORE;
             binary_grid[row] = zero_row;
         }
@@ -91,6 +93,7 @@ void ofApp::update(){
                 count++;
             }
             if (count == FILLED_SCORE) { //if 10 elements are 1's, then add score by 10 and set those elements back to 0's
+                clear_blocks.play(); //plays sound effect
                 count = 0;
                 score += FILLED_SCORE;
                 setColumnToAllZeroes(col); //sets columns to 0's
@@ -306,6 +309,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             red_piece->setMainCoord(valid_point); //sets the piece to new valid point and then draws it
             on_red_piece = false; //mouse is no longer dragging that piece
             if (valid_point != DEFAULT_RED_POINT) {
+                piece_added.play(); //plays sound effect
                 score += RED_PIECE_SCORE; //add to score (based on piece size) if piece released onto grid
             }
             this->update();
@@ -319,6 +323,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             light_green_piece->setMainCoord(valid_point);
             on_light_green_piece = false;
             if (valid_point != DEFAULT_LIGHT_GREEN_POINT) {
+                piece_added.play();
                 score += LIGHT_GREEN_PIECE_SCORE;
             }
             this->update();
@@ -332,6 +337,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             dark_green_piece->setMainCoord(valid_point);
             on_dark_green_piece = false;
             if (valid_point != DEFAULT_DARK_GREEN_POINT) {
+                piece_added.play();
                 score += DARK_GREEN_PIECE_SCORE;
             }
             this->update();
@@ -345,6 +351,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             blue_piece->setMainCoord(valid_point);
             on_blue_piece = false;
             if (valid_point != DEFAULT_BLUE_POINT) {
+                piece_added.play();
                 score += BLUE_PIECE_SCORE;
             }
             this->update();
@@ -358,6 +365,7 @@ void ofApp::mouseReleased(int x, int y, int button){
             orange_piece->setMainCoord(valid_point);
             on_orange_piece = false;
             if (valid_point != DEFAULT_ORANGE_POINT) {
+                piece_added.play();
                 score += ORANGE_PIECE_SCORE;
             }
             this->update();
