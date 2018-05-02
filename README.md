@@ -11,7 +11,7 @@ Each piece added on the grid adds points to the score depending on how many bloc
 Example of pieces getting stacked:
 ![alternativetext](https://github.com/uiuc-sp18-cs126/final-project-jseol073/blob/master/finalproject_images/Screen%20Shot%202018-04-30%20at%207.02.50%20PM.png "Pieces getting stacked")
 
-The goal of this game is to stack up those pieces such that a row or column gets filled with block which gives 10 points to the user. 
+The goal of this game is to stack up those pieces such that a row or column gets filled with blocks which gives 10 points to the user. 
 
 ![alternativetext](https://github.com/uiuc-sp18-cs126/final-project-jseol073/blob/master/finalproject_images/Screen%20Shot%202018-04-30%20at%207.03.07%20PM.png "The light green piece is added which clears 2 rows and adds 24 points to the player")
 
