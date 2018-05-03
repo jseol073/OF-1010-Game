@@ -20,7 +20,7 @@ The player keeps playing until the grid has no room for another piece which mean
 Example of losing:
 ![alternativetext](https://github.com/uiuc-sp18-cs126/final-project-jseol073/blob/master/finalproject_images/Screen%20Shot%202018-05-01%20at%208.22.22%20PM.png "The light green piece is added which clears 2 rows and adds 24 points to the player")
 
-The player can click the reset button to start a new game and also can  click the leaderboard button which displayes the highest scores up to 10 games.
+The player can click the reset button to start a new game and also can click on the leaderboard button which displays the highest scores up to 10 games.
 
 Example of leaderboard:
 ![alternativetext](https://github.com/uiuc-sp18-cs126/final-project-jseol073/blob/master/finalproject_images/Screen%20Shot%202018-04-30%20at%207.07.03%20PM.png)
